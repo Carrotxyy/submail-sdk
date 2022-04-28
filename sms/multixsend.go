@@ -1,21 +1,25 @@
 /**
  * @Author: Jacky
  * @Description:
- * @File: xsend
+ * @File: multixsend
  * @Version: 1.0.0
- * @Date: 2022/4/27 17:04
+ * @Date: 2022/4/28 14:51
  */
 package sms
 
 import "github.com/Carrotxyy/submail-sdk"
 
-const xsendURL = "https://api-v4.mysubmail.com/sms/xsend"
+const multiXSendURL = "https://api-v4.mysubmail.com/sms/multixsend"
 
-type XSendRequest struct {
+type MultiXSendFieldMulti struct {
+	To   string            `json:"to"`
+	Vars map[string]string `json:"vars"`
+}
+
+type MultiXSendRequest struct {
 	AppID       string `json:"appid"`
-	To          string `json:"to"`
 	Project     string `json:"project"` // 模板 ID
-	Vars        string `json:"vars"`    // 变量 json 字符串
+	Multi       string `json:"multi"`
 	Tag         string `json:"tag,omitempty"`
 	Timestamp   string `json:"timestamp,omitempty"`
 	SignType    string `json:"sign_type,omitempty"`
@@ -23,7 +27,8 @@ type XSendRequest struct {
 	Signature   string `json:"signature"`
 }
 
-type XSendResponse struct {
+type MultiXSendResponse struct {
+	To     string `json:"to"`
 	Status string `json:"status"`
 	SendID string `json:"send_id"`
 	Fee    int    `json:"fee"`
@@ -31,43 +36,41 @@ type XSendResponse struct {
 	Msg    string `json:"msg"`
 }
 
-func NewXSendRequest(to string, project string, vars map[string]string) *XSendRequest {
-	return &XSendRequest{
-		To:      to,
+func NewMultiXSendRequest(project string, multi []MultiXSendFieldMulti) *MultiXSendRequest {
+	return &MultiXSendRequest{
 		Project: project,
-		Vars:    submail.JsonMarshal(vars),
+		Multi:   submail.JsonMarshal(multi),
 	}
 }
 
-func (r *XSendRequest) SignMeta() string {
+func (r *MultiXSendRequest) SignMeta() string {
 	data := make(map[string]string)
 	data["appid"] = r.AppID
-	data["to"] = r.To
 	data["project"] = r.Project
 	data["timestamp"] = r.Timestamp
 	data["sign_type"] = r.SignType
 	data["sign_version"] = r.SignVersion
 	if submail.Version1.Is(r.SignVersion) {
-		data["vars"] = r.Vars
+		data["multi"] = r.Multi
 	}
 
 	return submail.SortAndJoin(data, "&")
 }
-func (r *XSendRequest) SetAppID(appID string) {
+func (r *MultiXSendRequest) SetAppID(appID string) {
 	r.AppID = appID
 }
-func (r *XSendRequest) SetTag(tag string) {
+func (r *MultiXSendRequest) SetTag(tag string) {
 	r.Tag = tag
 }
-func (r *XSendRequest) SetTimestamp(timestamp string) {
+func (r *MultiXSendRequest) SetTimestamp(timestamp string) {
 	r.Timestamp = timestamp
 }
-func (r *XSendRequest) SetSignType(signType string) {
+func (r *MultiXSendRequest) SetSignType(signType string) {
 	r.SignType = signType
 }
-func (r *XSendRequest) SetSignVersion(signVersion string) {
+func (r *MultiXSendRequest) SetSignVersion(signVersion string) {
 	r.SignVersion = signVersion
 }
-func (r *XSendRequest) SetSignature(signature string) {
+func (r *MultiXSendRequest) SetSignature(signature string) {
 	r.Signature = signature
 }

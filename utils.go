@@ -8,6 +8,7 @@
 package submail
 
 import (
+	"encoding/json"
 	"sort"
 	"strings"
 )
@@ -33,4 +34,9 @@ func SortAndJoin(data map[string]string, sep string) string {
 
 func JsonContentType() (string, string) {
 	return "Content-Type", "application/json;charset=UTF-8"
+}
+
+func JsonMarshal(v interface{}) string {
+	str, _ := json.Marshal(v)
+	return string(str)
 }

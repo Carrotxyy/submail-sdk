@@ -9,14 +9,13 @@ package sms
 
 import (
 	"context"
-	"encoding/json"
 	"os"
 	"testing"
 
 	"github.com/Carrotxyy/submail-sdk"
 )
 
-var _sms *Sms
+var _sms *SMS
 
 func TestMain(m *testing.M) {
 	_s := submail.NewSubmail(
@@ -25,11 +24,11 @@ func TestMain(m *testing.M) {
 		submail.WithSignType(submail.MD5),
 		submail.WithSignVersion(submail.Version2),
 	)
-	_sms = NewSms(_s)
+	_sms = NewSMS(_s)
 	os.Exit(m.Run())
 }
 
-func TestSms_XSend(t *testing.T) {
+func TestSMS_XSend(t *testing.T) {
 
 	vars := map[string]string{
 		"v_name": "eryang",
@@ -38,16 +37,42 @@ func TestSms_XSend(t *testing.T) {
 		"code":   "07325",
 	}
 
-	varsData, _ := json.Marshal(vars)
-
-	err, xsendResponse := _sms.XSend(context.TODO(), &XSendRequest{
-		To:      "15220091565",
-		Project: "5mEYH3",
-		Vars:    string(varsData),
-	})
+	err, xsendResponse := _sms.XSend(context.TODO(), NewXSendRequest("15220091565", "5mEYH3", vars))
 	if err != nil {
 		t.Error(err)
 	} else {
 		t.Logf("%+v", xsendResponse)
+	}
+}
+
+func TestSMS_MultiXSend(t *testing.T) {
+	mulit := []MultiXSendFieldMulti{
+		{
+			To: "15220091565",
+			Vars: map[string]string{
+				"v_name": "肖二阳",
+				"v_time": "2022/04/29 08:00:00",
+				"url":    "test",
+				"code":   "07325",
+			},
+		},
+		{
+			To: "18938632226",
+			Vars: map[string]string{
+				"v_name": "李诚",
+				"v_time": "2022/04/29 08:00:00",
+				"url":    "test",
+				"code":   "07326",
+			},
+		},
+	}
+
+	request := NewMultiXSendRequest("5mEYH3", mulit)
+
+	err, response := _sms.MultiXSend(context.TODO(), request)
+	if err != nil {
+		t.Error(err)
+	} else {
+		t.Logf("%+v", response)
 	}
 }
