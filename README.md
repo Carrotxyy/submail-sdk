@@ -7,8 +7,8 @@
 func main(){
 	// 密钥明文验证模式
 	core := submail.NewSubmail("appid", "appkey")
-   	// 数字签名验证模式
-    //core := submail.NewSubmail(
+   	// 数字签名验证模式 
+   	//core := submail.NewSubmail(
 	//	"appid",
 	//	"appkey",
 	//	submail.WithSignType(submail.MD5),
@@ -16,7 +16,7 @@ func main(){
 	//)
 
 	// 创建 SMS
-	smsCli := sms.NewSms(core)
+	smsCli := sms.NewSMS(core)
 
 	// 创建消息体
 	vars := map[string]string{
@@ -25,7 +25,7 @@ func main(){
 	}
 	request := sms.NewXSendRequest("phone number", "template id", vars)
 
-	// 发送消息
+	// 发送模板消息
 	err, response := smsCli.XSend(context.TODO(), request)
 	if err != nil {
 		fmt.Println(err)
