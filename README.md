@@ -1,6 +1,11 @@
 # Submail
 对接短信服务提供商 **SUBMAIL** 开放接口！
 
+## 下载
+```go
+go get github.com/Carrotxyy/submail-sdk
+```
+
 ## 实例
 
 ```go

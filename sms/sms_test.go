@@ -48,7 +48,7 @@ func TestSMS_XSend(t *testing.T) {
 func TestSMS_MultiXSend(t *testing.T) {
 	mulit := []MultiXSendFieldMulti{
 		{
-			To: "18938632227",
+			To: "18938632226",
 			Vars: map[string]string{
 				"v_name": "李诚",
 				"v_time": "2022/04/29 08:00:00",
@@ -57,7 +57,7 @@ func TestSMS_MultiXSend(t *testing.T) {
 			},
 		},
 		{
-			To: "15220091566",
+			To: "15220091565",
 			Vars: map[string]string{
 				"v_name": "肖二阳",
 				"v_time": "2022/04/29 08:00:00",

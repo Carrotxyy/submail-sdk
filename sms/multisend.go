@@ -12,8 +12,8 @@ import "github.com/Carrotxyy/submail-sdk"
 const multiSendURL = "https://api-v4.mysubmail.com/sms/multisend"
 
 type MultiSendFieldMulti struct {
-	To   string                 `json:"to"`
-	Vars map[string]interface{} `json:"vars"`
+	To   string            `json:"to"`
+	Vars map[string]string `json:"vars"`
 }
 
 type MultiSendRequest struct {
